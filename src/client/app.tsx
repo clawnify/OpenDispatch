@@ -1,4 +1,4 @@
-import { reportLocation } from "@clawnify/app/client";
+import { useHostNavigate, reportLocation } from "@clawnify/app/client";
 import { useEffect, useMemo, useState } from "preact/hooks";
 import { AppContext } from "./context";
 import { useAppState } from "./hooks/use-app";
@@ -33,6 +33,7 @@ export function App() {
   }, [isAgent]);
 
   const { view, id, navigate } = useRouter();
+  useHostNavigate(navigate);
   const appState = useAppState(isAgent, navigate);
   const [detailError, setDetailError] = useState<string | null>(null);
   useEffect(() => { reportLocation(window.location.pathname + window.location.search); }, [view, id]);
@@ -62,7 +63,7 @@ export function App() {
     if (view === "customers" && id && appState.selectedCustomer) return <CustomerDetail />;
     if (view === "invoices" && id && appState.selectedInvoice) return <InvoiceDetail />;
     switch (view) {
-      case "routes": return <DeliveryRoutes />;
+      case "routes": return <DeliveryRoutes key={id ?? "overview"} id={id} />;
       case "schedule": return <ScheduleView />;
       case "jobs": return <JobList />;
       case "customers": return <CustomerList />;

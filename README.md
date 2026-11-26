@@ -19,3 +19,9 @@ Use Node.js 22 and pnpm. Run `pnpm install --frozen-lockfile`, then `pnpm dev` t
 ## License
 
 MIT. See [LICENSE](LICENSE).
+
+### Depots and planned distance
+
+On a route, choose **Plan route**. Start at the first delivery or save a named depot with its street address and entrance coordinates (latitude, longitude). Choose whether the van returns there. Each route keeps the depot it started with. Depots do not count as deliveries. For newly imported addresses without saved pins, the planner asks for their coordinates once.
+
+Saving sends the ordered coordinates to an OSRM driving service and stores the road line and distance together. The local Wrangler configuration uses the public demonstration router. For deployment, set `OSRM_BASE_URL` to your own OSRM driving service or a compatible managed endpoint. Opening an existing plan uses the saved route. Adding stops makes its old distance unavailable until the plan is recalculated.

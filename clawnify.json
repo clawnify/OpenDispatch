@@ -27,7 +27,8 @@
   "agent": "agent.md",
   "env": {
     "optional": [
-      "GOOGLE_MAPS_EMBED_BROWSER_KEY"
+      "GOOGLE_MAPS_EMBED_BROWSER_KEY",
+      "OSRM_BASE_URL"
     ]
   }
 }

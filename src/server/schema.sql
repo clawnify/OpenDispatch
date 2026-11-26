@@ -303,3 +303,23 @@ BEGIN
       1 + COALESCE((SELECT MAX(position) FROM delivery_stops WHERE route_id=r.id), 0)
     FROM delivery_routes r WHERE technician_id=NEW.technician_id AND delivery_date=NEW.delivery_date;
 END;
+
+CREATE TABLE IF NOT EXISTS delivery_route_maps (
+  id TEXT PRIMARY KEY NOT NULL REFERENCES delivery_routes(id) ON DELETE CASCADE,
+  map_data TEXT NOT NULL CHECK(json_valid(map_data))
+);
+
+CREATE TABLE IF NOT EXISTS delivery_depots (
+  id TEXT PRIMARY KEY NOT NULL,
+  name TEXT NOT NULL,
+  address TEXT NOT NULL,
+  longitude REAL NOT NULL CHECK(longitude BETWEEN -180 AND 180),
+  latitude REAL NOT NULL CHECK(latitude BETWEEN -90 AND 90),
+  UNIQUE(name, address, longitude, latitude)
+);
+
+CREATE TABLE IF NOT EXISTS delivery_route_timing (
+  id TEXT PRIMARY KEY NOT NULL REFERENCES delivery_routes(id) ON DELETE CASCADE,
+  revision TEXT NOT NULL,
+  settings TEXT NOT NULL
+);

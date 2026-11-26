@@ -34,7 +34,7 @@ export function useRouter() {
 
   const navigate = useCallback((to: string) => {
     window.history.pushState(null, "", to);
-    setRoute(parseRoute(to));
+    setRoute(parseRoute(window.location.pathname));
   }, []);
 
   useEffect(() => {
