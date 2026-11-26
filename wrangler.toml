@@ -7,3 +7,7 @@ compatibility_flags = ["nodejs_compat"]
 binding = "DB"
 database_name = "open-dispatch-db"
 database_id = "local"
+
+# Public routing service for the local preview. Set your own endpoint in production.
+[vars]
+OSRM_BASE_URL = "https://router.project-osrm.org"

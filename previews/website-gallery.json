@@ -1,0 +1,30 @@
+[
+  {
+    "src": "previews/fleet-overview.png",
+    "alt": "Conceptual fleet list showing three drivers and the planned route duration for Noor.",
+    "caption": "Compare drivers’ planned finish times",
+    "width": 1600,
+    "height": 1000
+  },
+  {
+    "src": "previews/stop-allowance.png",
+    "alt": "Conceptual route itinerary and timing editor showing a twenty-minute visit at Jordaan Grocer.",
+    "caption": "Plan time at each stop",
+    "width": 1600,
+    "height": 1000
+  },
+  {
+    "src": "previews/order-manifest.png",
+    "alt": "Conceptual manifest with order references and a delivery stop showing its recipient, payer and invoice.",
+    "caption": "Import orders with invoice references",
+    "width": 1600,
+    "height": 1000
+  },
+  {
+    "src": "previews/depot-return.png",
+    "alt": "Conceptual depot selection and route timing showing the nine-minute drive back after the final stop.",
+    "caption": "Include the return to the depot",
+    "width": 1600,
+    "height": 1000
+  }
+]

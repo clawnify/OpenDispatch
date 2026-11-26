@@ -1,6 +1,7 @@
 import { createApp, createRoute, z } from "@clawnify/app";
 import type { DBEnv } from "@clawnify/db";
 import { query, get, run } from "./db.js";
+import { timingApi } from "./route-timing.js";
 import { delivery } from "./delivery.js";
 import { equipmentApp } from "./equipment.js";
 
@@ -24,6 +25,7 @@ app.use("*", async (c, next) => {
   await next();
 });
 
+app.route("/", timingApi);
 app.route("/api/delivery", delivery);
 app.route("/", equipmentApp);
 
