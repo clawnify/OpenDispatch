@@ -1,16 +1,16 @@
 import { AppNav } from "@clawnify/app/client";
 import { useState } from "preact/hooks";
 import { useApp } from "../context";
-import { PanelLeft, CalendarClock, LayoutDashboard, Briefcase, Users, Wrench, Settings, CalendarDays, FileText, Package } from "lucide-preact";
+import { PanelLeft, Route, Truck, LayoutDashboard, Briefcase, Users, Settings, CalendarDays, FileText, Package } from "lucide-preact";
 import type { View } from "../types";
 
 const navItems: { view: View; path: string; label: string; icon: typeof LayoutDashboard }[] = [
-  { view: "routes", path: "/", label: "Delivery routes", icon: CalendarClock },
+  { view: "routes", path: "/", label: "Delivery routes", icon: Route },
   { view: "dashboard", path: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { view: "schedule", path: "/schedule", label: "Schedule", icon: CalendarDays },
   { view: "jobs", path: "/jobs", label: "Jobs", icon: Briefcase },
   { view: "customers", path: "/customers", label: "Customers", icon: Users },
-  { view: "technicians", path: "/technicians", label: "Drivers", icon: Wrench },
+  { view: "technicians", path: "/technicians", label: "Drivers", icon: Truck },
   { view: "invoices", path: "/invoices", label: "Invoices", icon: FileText },
   { view: "materials", path: "/materials", label: "Materials", icon: Package },
   { view: "services", path: "/services", label: "Service types", icon: Settings },
@@ -37,7 +37,7 @@ export function Sidebar({ currentView }: { currentView: View }) {
     <aside class={`sidebar ${collapsed ? "collapsed" : ""}`}>
       <div class="sidebar-brand">
         <div class="sidebar-brand-icon">
-          <CalendarClock size={16} />
+          <Route size={16} />
         </div>
         <span class="sidebar-brand-name">OpenDispatch</span>
         <button class="btn-icon" aria-label={collapsed ? "Expand navigation" : "Collapse navigation"} onClick={() => setCollapsed(!collapsed)}><PanelLeft size={16} /></button>
@@ -66,7 +66,7 @@ export function Sidebar({ currentView }: { currentView: View }) {
           </button>
         ))}
       </nav>
-      {nav.card && !collapsed && <div style={{ padding: "0 8px 8px" }}>{nav.card}</div>}
+      {nav.card && !collapsed && <div class="sidebar-product-card">{nav.card}</div>}
       <div class="sidebar-footer">
         <div class="sidebar-stat">
           <span class="sidebar-stat-value">{stats.today_jobs}</span>

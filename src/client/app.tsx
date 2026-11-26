@@ -79,7 +79,7 @@ export function App() {
       <div class="layout">
         <Sidebar currentView={view} />
         <main class="main-content">
-          <OfflineBanner />
+          <OfflineBanner issuesOnly={view === "routes"} />
           {appState.loading ? (
             <div class="loading-text">Loading...</div>
           ) : (

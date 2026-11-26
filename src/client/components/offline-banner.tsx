@@ -2,10 +2,10 @@ import { CloudOff, HardDriveDownload, RotateCw, Trash2 } from "lucide-preact";
 import { useConnectivity } from "../hooks/use-connectivity";
 import { clearSavedFieldData, enableOfflineStorage } from "../offline";
 
-export function OfflineBanner() {
+export function OfflineBanner({ issuesOnly = false }: { issuesOnly?: boolean }) {
   const { isOffline, usingSavedData, hasSavedData, offlineStorageEnabled } = useConnectivity();
   const hasConnectionIssue = isOffline || usingSavedData;
-  if (!hasConnectionIssue && !hasSavedData && offlineStorageEnabled) return null;
+  if (!hasConnectionIssue && (issuesOnly || (!hasSavedData && offlineStorageEnabled))) return null;
 
   const clearSavedData = async () => {
     await clearSavedFieldData();
