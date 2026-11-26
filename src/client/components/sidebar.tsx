@@ -5,11 +5,12 @@ import { PanelLeft, CalendarClock, LayoutDashboard, Briefcase, Users, Wrench, Se
 import type { View } from "../types";
 
 const navItems: { view: View; path: string; label: string; icon: typeof LayoutDashboard }[] = [
-  { view: "dashboard", path: "/", label: "Dashboard", icon: LayoutDashboard },
+  { view: "routes", path: "/", label: "Delivery routes", icon: CalendarClock },
+  { view: "dashboard", path: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { view: "schedule", path: "/schedule", label: "Schedule", icon: CalendarDays },
   { view: "jobs", path: "/jobs", label: "Jobs", icon: Briefcase },
   { view: "customers", path: "/customers", label: "Customers", icon: Users },
-  { view: "technicians", path: "/technicians", label: "Technicians", icon: Wrench },
+  { view: "technicians", path: "/technicians", label: "Drivers", icon: Wrench },
   { view: "invoices", path: "/invoices", label: "Invoices", icon: FileText },
   { view: "materials", path: "/materials", label: "Materials", icon: Package },
   { view: "services", path: "/services", label: "Service types", icon: Settings },
@@ -22,11 +23,11 @@ export function Sidebar({ currentView }: { currentView: View }) {
 
   // One <AppNav>: inside Clawnify the dashboard draws this navigation, and
   // anywhere else the app's own sidebar below is drawn from it.
-  const icons = ["home", "calendar-days", "briefcase", "users", "settings", "file-text", "package", "settings"];
-  return <AppNav title="Field Service" icon="settings" active={currentView === "assets" ? "customers" : currentView}
+  const icons = ["calendar-days", "home", "calendar-days", "briefcase", "users", "settings", "file-text", "package", "settings"];
+  return <AppNav title="Delivery dispatch" icon="settings" active={currentView === "assets" ? "customers" : currentView}
     groups={[{ items: navItems.map((item, index) => ({
       id: item.view, label: item.label, href: item.path, icon: icons[index],
-      home: item.view === "dashboard",
+      home: item.view === "routes",
       count: item.view === "jobs" ? stats.jobs || undefined
         : item.view === "customers" ? stats.customers || undefined
         : item.view === "invoices" ? stats.invoices_outstanding || undefined : undefined,

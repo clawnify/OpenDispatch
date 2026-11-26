@@ -22,18 +22,18 @@ export function TechnicianList() {
   return (
     <div class="page">
       <div class="page-header">
-        <h1>Technicians</h1>
+        <h1>Drivers</h1>
         <button class="btn btn-primary" onClick={() => setShowCreate(true)}>
-          <Plus size={16} /> Add Technician
+          <Plus size={16} /> Add driver
         </button>
       </div>
 
       <div class="table-scroll">
         {technicians.length === 0 ? (
           <div class="empty-state">
-            <p>No technicians yet</p>
+            <p>No drivers yet</p>
             <button class="btn" onClick={() => setShowCreate(true)}>
-              Add your first technician
+              Add your first driver
             </button>
           </div>
         ) : (

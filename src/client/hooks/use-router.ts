@@ -7,7 +7,8 @@ export interface RouteState {
 }
 
 const VIEW_ROUTES: Record<string, View> = {
-  "": "dashboard",
+  "": "routes",
+  "routes": "routes",
   "dashboard": "dashboard",
   "schedule": "schedule",
   "jobs": "jobs",

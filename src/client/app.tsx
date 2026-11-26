@@ -4,6 +4,7 @@ import { AppContext } from "./context";
 import { useAppState } from "./hooks/use-app";
 import { useRouter } from "./hooks/use-router";
 import { Sidebar } from "./components/sidebar";
+import { DeliveryRoutes } from "./components/delivery-routes";
 import { Dashboard } from "./components/dashboard";
 import { ScheduleView } from "./components/schedule-view";
 import { JobList } from "./components/job-list";
@@ -61,6 +62,7 @@ export function App() {
     if (view === "customers" && id && appState.selectedCustomer) return <CustomerDetail />;
     if (view === "invoices" && id && appState.selectedInvoice) return <InvoiceDetail />;
     switch (view) {
+      case "routes": return <DeliveryRoutes />;
       case "schedule": return <ScheduleView />;
       case "jobs": return <JobList />;
       case "customers": return <CustomerList />;

@@ -29,7 +29,7 @@ export function CreateTechnician({ onClose }: { onClose: () => void }) {
     <div class="modal-overlay" onClick={onClose}>
       <div class="modal modal-sm" onClick={(e) => e.stopPropagation()}>
         <div class="modal-header">
-          <h2>Add Technician</h2>
+          <h2>Add driver</h2>
           <button class="btn-icon" onClick={onClose}><X size={18} /></button>
         </div>
         <form onSubmit={handleSubmit}>
@@ -54,7 +54,7 @@ export function CreateTechnician({ onClose }: { onClose: () => void }) {
           <div class="modal-footer">
             <button type="button" class="btn" onClick={onClose}>Cancel</button>
             <button type="submit" class="btn btn-primary" disabled={submitting}>
-              {submitting ? "Adding..." : "Add Technician"}
+              {submitting ? "Adding..." : "Add driver"}
             </button>
           </div>
         </form>

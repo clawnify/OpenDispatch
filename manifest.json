@@ -41,6 +41,8 @@
     "package.json",
     "vite.config.ts",
     "tsconfig.json",
-    "index.html"
+    "index.html",
+    "src/server/delivery.ts",
+    "src/client/components/delivery-routes.tsx"
   ]
 }

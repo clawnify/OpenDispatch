@@ -258,3 +258,48 @@ WHEN (SELECT asset_id FROM jobs WHERE id = NEW.job_id) IS NOT NULL BEGIN
   INSERT INTO asset_history(asset_id, job_id, summary, details)
   SELECT asset_id, id, identifier || ' note added', NEW.content FROM jobs WHERE id = NEW.job_id;
 END;
+
+CREATE TABLE IF NOT EXISTS delivery_orders (
+  id TEXT PRIMARY KEY NOT NULL,
+  customer_id TEXT NOT NULL REFERENCES customers(id) ON DELETE RESTRICT,
+  reference TEXT NOT NULL,
+  recipient TEXT NOT NULL,
+  address TEXT NOT NULL,
+  invoice_reference TEXT NOT NULL DEFAULT '',
+  UNIQUE(customer_id, reference)
+);
+
+CREATE TABLE IF NOT EXISTS delivery_routes (
+  id TEXT PRIMARY KEY NOT NULL,
+  technician_id TEXT NOT NULL REFERENCES technicians(id) ON DELETE RESTRICT,
+  delivery_date TEXT NOT NULL,
+  UNIQUE(technician_id, delivery_date)
+);
+
+CREATE TABLE IF NOT EXISTS delivery_stops (
+  id TEXT PRIMARY KEY NOT NULL,
+  route_id TEXT NOT NULL REFERENCES delivery_routes(id) ON DELETE RESTRICT,
+  order_id TEXT NOT NULL REFERENCES delivery_orders(id) ON DELETE RESTRICT,
+  position INTEGER NOT NULL CHECK(position > 0),
+  UNIQUE(route_id, position)
+);
+
+-- One insert imports an entire manifest atomically on both database backends.
+CREATE VIEW IF NOT EXISTS delivery_manifest AS
+SELECT o.id, o.customer_id, o.reference, o.recipient, o.address, o.invoice_reference,
+       r.technician_id, r.delivery_date, r.id AS route_id, s.id AS stop_id
+FROM delivery_orders o JOIN delivery_stops s ON s.order_id=o.id
+JOIN delivery_routes r ON r.id=s.route_id;
+
+CREATE TRIGGER IF NOT EXISTS import_delivery_stop INSTEAD OF INSERT ON delivery_manifest
+BEGIN
+  INSERT INTO delivery_routes(id, technician_id, delivery_date)
+    VALUES(NEW.route_id, NEW.technician_id, NEW.delivery_date)
+    ON CONFLICT(technician_id, delivery_date) DO NOTHING;
+  INSERT INTO delivery_orders(id, customer_id, reference, recipient, address, invoice_reference)
+    VALUES(NEW.id, NEW.customer_id, NEW.reference, NEW.recipient, NEW.address, NEW.invoice_reference);
+  INSERT INTO delivery_stops(id, order_id, route_id, position)
+    SELECT NEW.stop_id, NEW.id, r.id,
+      1 + COALESCE((SELECT MAX(position) FROM delivery_stops WHERE route_id=r.id), 0)
+    FROM delivery_routes r WHERE technician_id=NEW.technician_id AND delivery_date=NEW.delivery_date;
+END;

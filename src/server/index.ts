@@ -1,6 +1,7 @@
 import { createApp, createRoute, z } from "@clawnify/app";
 import type { DBEnv } from "@clawnify/db";
 import { query, get, run } from "./db.js";
+import { delivery } from "./delivery.js";
 import { equipmentApp } from "./equipment.js";
 
 type Env = { Bindings: DBEnv };
@@ -23,6 +24,7 @@ app.use("*", async (c, next) => {
   await next();
 });
 
+app.route("/api/delivery", delivery);
 app.route("/", equipmentApp);
 
 // ── First-run data ─────────────────────────────────────────────────

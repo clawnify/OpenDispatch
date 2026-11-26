@@ -33,11 +33,12 @@ function legacy() {
 test("UUID migration preserves every row, relation, timestamp and retained snapshot; repeat is a no-op", () => {
   const db = legacy();
   try {
-    const before = Object.fromEntries(tables.map((t) => [t, db.prepare(`SELECT * FROM ${t} ORDER BY rowid`).all()]));
+    const legacyTables = tables.filter(t => db.prepare(`PRAGMA table_info(${t})`).all().length);
+    const before = Object.fromEntries(legacyTables.map((t) => [t, db.prepare(`SELECT * FROM ${t} ORDER BY rowid`).all()]));
     db.exec("BEGIN"); db.exec(plan(db)); db.exec("COMMIT");
     const after = Object.fromEntries(tables.map((t) => [t, db.prepare(`SELECT * FROM ${t} ORDER BY rowid`).all()]));
     for (const table of tables) {
-      assert.equal(after[table].length, before[table].length, table);
+      assert.equal(after[table].length, (before[table] ?? []).length, table);
       after[table].forEach((row, i) => {
         for (const [key, value] of Object.entries(row)) {
           if (key === "id" || key.endsWith("_id")) { if (value !== null) assert.match(value, uuid, `${table}.${key}`); }

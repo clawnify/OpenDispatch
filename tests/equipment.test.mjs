@@ -193,3 +193,18 @@ test("UUID API contracts cover all record types and concurrent creation", async 
   await api("PUT", `/api/jobs/${job.id}`, { technician_id: null });
   assert.equal((await api("GET", `/api/jobs/${job.id}`)).job.technician_id, null);
 });
+
+test("manifest appends ordered stops atomically without billing the recipient", async () => {
+  const driver = crypto.randomUUID();
+  sql(`INSERT INTO technicians(id,name) VALUES ('${driver}','Manifest driver')`);
+  const order = { reference: "ORDER-27", recipient: "North depot", address: "27 Main Street", invoice: "INV-42" };
+  const body = { customer: sql("SELECT id FROM customers LIMIT 1")[0].id, driver, day: "2026-11-26", orders: [order] };
+  const count = sql("SELECT count(*) AS n FROM invoices")[0].n;
+  await api("POST", "/api/delivery/manifest", body, 201);
+  await api("POST", "/api/delivery/manifest", { ...body, orders: [{ ...order, reference: "ORDER-28" }, order] }, 409);
+  await api("POST", "/api/delivery/manifest", { ...body, orders: [{ ...order, reference: "ORDER-29" }] }, 201);
+  const { stops } = await api("GET", "/api/delivery/routes?day=2026-11-26");
+  assert.deepEqual(stops.map(s => [s.position, s.reference, s.invoice_reference]), [[1,"ORDER-27","INV-42"],[2,"ORDER-29","INV-42"]]);
+  assert.equal(stops[0].route_id, stops[1].route_id);
+  assert.equal(sql("SELECT count(*) AS n FROM invoices")[0].n, count);
+});
