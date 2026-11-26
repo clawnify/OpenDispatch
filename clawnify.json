@@ -24,5 +24,10 @@
       }
     ]
   },
-  "agent": "agent.md"
+  "agent": "agent.md",
+  "env": {
+    "optional": [
+      "GOOGLE_MAPS_EMBED_BROWSER_KEY"
+    ]
+  }
 }

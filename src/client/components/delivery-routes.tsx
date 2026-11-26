@@ -4,6 +4,8 @@ import { api } from "../api";
 import { calendarDate } from "../calendar";
 import { useApp } from "../context";
 
+import { RouteMap, navigationUrl } from "./route-map";
+
 interface Stop {
   route_id: string; driver: string; position: number; reference: string;
   payer: string; recipient: string; address: string; invoice_reference: string;
@@ -17,6 +19,7 @@ export function DeliveryRoutes() {
   const [sheet, setSheet] = useState("");
   const [revision, refresh] = useState(0);
   const [stops, setStops] = useState<Stop[] | null>(null);
+  const [browserKey, setBrowserKey] = useState<string>();
   const [loadError, setLoadError] = useState("");
   const [feedback, setFeedback] = useState("");
   const [saving, setSaving] = useState(false);
@@ -25,8 +28,8 @@ export function DeliveryRoutes() {
     let current = true;
     setStops(null);
     setLoadError("");
-    api<{ stops: Stop[] }>("GET", "/api/delivery/routes?day=" + encodeURIComponent(day))
-      .then(data => { if (current) setStops(data.stops); })
+    api<{ stops: Stop[]; mapsEmbedBrowserKey?: string }>("GET", "/api/delivery/routes?day=" + encodeURIComponent(day))
+      .then(data => { if (current) { setStops(data.stops); setBrowserKey(data.mapsEmbedBrowserKey); } })
       .catch(error => { if (current) setLoadError(error.message); });
     return () => { current = false; };
   }, [day, revision]);
@@ -86,10 +89,11 @@ export function DeliveryRoutes() {
             </div>}
         {Array.from(routes, ([id, rows]) => <article class="driver-route" key={id}>
           <header><Truck size={18} aria-hidden="true" /><h3>{rows[0].driver}</h3><span>{rows.length} {rows.length === 1 ? "stop" : "stops"}</span></header>
+          <RouteMap addresses={rows.map(row => row.address)} driver={rows[0].driver} browserKey={browserKey} />
           <ol>{rows.map(row => <li key={row.position}>
             <span class="route-position" aria-label={'Stop ' + row.position}>{row.position}</span>
             <div><strong>{row.recipient}</strong>
-              <p class="stop-address"><MapPin size={14} aria-hidden="true" />{row.address}</p>
+              <p class="stop-address"><MapPin size={14} aria-hidden="true" /><a target="_blank" rel="noopener noreferrer" href={navigationUrl(row.address)} aria-label={"Directions to " + row.recipient}>{row.address}</a></p>
               <p class="stop-refs">{row.payer} · Order {row.reference}{row.invoice_reference && " · Invoice " + row.invoice_reference}</p>
             </div>
           </li>)}</ol>

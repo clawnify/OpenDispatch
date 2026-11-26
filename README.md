@@ -8,6 +8,10 @@ This first revision carries over the back office from [OpenFieldService](https:/
 
 Open Delivery routes and choose a date, paying customer and driver. Paste spreadsheet rows containing the order reference, recipient, address and optional external invoice reference. The dispatcher sees the stops in import order, grouped by driver. A duplicate reference for the same payer rejects the entire import. Importing a manifest preserves existing invoice references without creating an invoice. Subsequent work covers revocable driver links, offline photo and signature capture, single-van route optimization, recipient tracking and delivery billing. Those features are planned.
 
+## Route maps
+
+Each driver route opens in Google Maps in dispatch order. Select an address to navigate from your current location. For a map inside the route board, set `GOOGLE_MAPS_EMBED_BROWSER_KEY` to a dedicated browser key restricted to the Maps Embed API and the app’s website origin. This key is visible in the browser. Longer routes open in consecutive sections.
+
 ## Local development
 
 Use Node.js 22 and pnpm. Run `pnpm install --frozen-lockfile`, then `pnpm dev` to initialize the local database and start the UI and API. Run `pnpm test` for the inherited regression suite and `pnpm build` for the production frontend.

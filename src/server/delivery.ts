@@ -2,7 +2,7 @@ import { z } from "@clawnify/app";
 import { Hono } from "hono";
 import { query, run } from "./db.js";
 
-export const delivery = new Hono();
+export const delivery = new Hono<{ Bindings: { GOOGLE_MAPS_EMBED_BROWSER_KEY?: string } }>();
 const day = z.string().date();
 const field = z.string().trim().min(1).max(500);
 const manifest = z.object({
@@ -22,7 +22,7 @@ delivery.get("/routes", async c => {
     JOIN delivery_stops s ON s.route_id=r.id JOIN delivery_orders o ON o.id=s.order_id
     JOIN customers p ON p.id=o.customer_id WHERE r.delivery_date=?
     ORDER BY t.name, r.id, s.position`, [date.data]);
-  return c.json({ stops });
+  return c.json({ stops, mapsEmbedBrowserKey: c.env.GOOGLE_MAPS_EMBED_BROWSER_KEY });
 });
 
 delivery.post("/manifest", async c => {

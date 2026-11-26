@@ -43,6 +43,7 @@
     "tsconfig.json",
     "index.html",
     "src/server/delivery.ts",
-    "src/client/components/delivery-routes.tsx"
+    "src/client/components/delivery-routes.tsx",
+    "src/client/components/route-map.tsx"
   ]
 }

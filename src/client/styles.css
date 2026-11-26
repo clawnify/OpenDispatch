@@ -1198,3 +1198,6 @@ button.stat-card:hover { background: var(--surface-sunken); box-shadow: var(--sh
   .sidebar-nav { background: var(--surface-sunken); border-bottom: 1px solid var(--border); }
   .sidebar-product-card { order: 2; padding: 1rem; max-width: 24rem; }
 }
+.route-map { display: grid; gap: .5rem; padding: .75rem 1rem; border-bottom: 1px solid var(--border); }
+.route-map iframe { width: 100%; height: clamp(14rem, 32vh, 24rem); border: 0; border-radius: var(--radius-sm); }
+.route-map a, .stop-address a { color: var(--text); text-underline-offset: .18em; font-size: .8125rem; }
