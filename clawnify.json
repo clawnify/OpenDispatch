@@ -1,0 +1,28 @@
+{
+  "$schema": "https://app.clawnify.com/schema/v1/clawnify.json",
+  "version": 1,
+  "name": "Delivery dispatch",
+  "description": "Dispatch workspace for distributors, wholesalers, retailers and local couriers running their own vans.",
+  "icon": "icon.svg",
+  "tags": [
+    "delivery-dispatch",
+    "courier-management",
+    "last-mile-delivery"
+  ],
+  "app": {
+    "framework": "preact+hono",
+    "database": true,
+    "storage": false
+  },
+  "deploy": {
+    "prompts": [
+      {
+        "key": "business_type",
+        "label": "How do you bill deliveries?",
+        "placeholder": "We deliver our own invoiced orders, or we bill customers for delivery services.",
+        "required": true
+      }
+    ]
+  },
+  "agent": "agent.md"
+}
